@@ -1,0 +1,27 @@
+{
+  "name": "githubaction-latest-hashnode-posts",
+  "version": "1.0.0",
+  "description": "Github Action step to get latest hashnode posts",
+  "author": "Anupam Majhi",
+  "license": "MIT",
+  "homepage": "https://github.com/anupammajhi/githubaction-latest-hashnode-posts#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anupammajhi/githubaction-latest-hashnode-posts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anupammajhi/githubaction-latest-hashnode-posts/issues"
+  },
+  "keywords": [
+    "hashnode",
+    "github-action",
+    "action",
+    "posts",
+    "graphql",
+    "github actions"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "test.js"
+  }
+}
