@@ -1,0 +1,17 @@
+name: My Test Workflow
+
+on: workflow_dispatch
+
+jobs:
+  my_test_customaction:
+    runs-on: ubuntu-latest
+    name: My test Custom Action
+    steps:
+      - name: Hello World Action
+        id: helloworld
+        uses: anupammajhi/githubaction-latest-hashnode-posts@v1.0.0
+        with:
+          who-to-greet: 'Mo'
+      - name: Get Output
+        id: getoutput
+        run: echo "The time of greet is ${{ steps.helloworld.outputs.time }}"
