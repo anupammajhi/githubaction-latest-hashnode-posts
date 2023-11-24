@@ -7,9 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     name: My test Custom Action
     steps:
+      - name: My first step - check out repository
+        uses: actions/checkout@v4
       - name: Hello World Action
         id: helloworld
-        uses: anupammajhi/githubaction-latest-hashnode-posts@v0.0.1
+        # uses: anupammajhi/githubaction-latest-hashnode-posts@v0.0.1
+        uses: "./"
         with:
           who-to-greet: 'Mo'
       - name: Get Output

@@ -1,7 +1,7 @@
 name: Hello World
 description: Greet Someone and record the time
 inputs:
-  who-to-great:
+  who-to-greet:
     description: Who to Greet
     required: true
     default: World
