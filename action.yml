@@ -1,13 +1,20 @@
-name: Hello World
-description: Greet Someone and record the time
+name: Recent Hashnode Posts
+description: Github Action to get recent posts from Hashnode
 inputs:
-  who-to-greet:
-    description: Who to Greet
+  HASHNODE_PUBLICATION_ID:
+    description: Publication id of your Hashnode Publication (the is is part of url when you visit the settings of your publication)
     required: true
-    default: World
+  HASHNODE_GQL_ENDPOINT:
+    description: GraphQL endpoint for Hashnode
+    required: true
+    default: "https://gql.hashnode.com"
+  MAX_POSTS:
+    description: Number of maximum posts to fetch from Hashnode
+    required: true
+    default: 10
 outputs:
-  time:
-    description: Time of greet
+  result:
+    description: Result with the details of recent posts. (JSON)
 runs:
   using: 'node20'
   main: dist/index.js

@@ -1,30 +1,14 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const https = require('https')
-require('dotenv').config();
-
-// try {
-//     const nameToGreet = core.getInput('who-to-greet');
-//     console.log(`Hello Hello Hello ${nameToGreet}`);
-//     const time = (new Date()).toTimeString();
-//     core.setOutput("time", time);
-//     const payload = JSON.stringify(github.context.payload, undefined, 2)
-//     console.log(`The event payload ${payload}`)
-// }
-// catch (e){
-//     core.setFailed(e.message);
-// }
-const DEFAULT_GQL_ENDPOINT = "https://gql.hashnode.com"
-const DEFAULT_MAX_POSTS = '10'
-
 
 async function getInputs(){
-    const publicationId = process.env.HASHNODE_PUBLICATION_ID
+    const publicationId = core.getInput('HASHNODE_PUBLICATION_ID')
 
     return {
-        gqlEndpoint: process.env.HASHNODE_GQL_ENDPOINT || DEFAULT_GQL_ENDPOINT,
+        gqlEndpoint: core.getInput('HASHNODE_GQL_ENDPOINT'),
         PublicationId: publicationId,
-        maxPosts: process.env.MAX_POSTS || DEFAULT_MAX_POSTS
+        maxPosts: core.getInput('MAX_POSTS')
     }
 }
 
@@ -73,27 +57,48 @@ async function getPosts(inputs) {
         headers: gqlHeaders
     }
 
-    let req = https.request(gqlEndpoint, options, (res) => {
-        let data = ''
-        console.log(`statusCode: ${res.statusCode}`);
-        res.on('data', (d) => {
-            data += d
+    var reqPromise = new Promise((resolve, reject) => {
+        let req = https.request(gqlEndpoint, options, (res) => {
+            let resdata = ''
+            res.on('data', (d) => {
+                resdata += d
+            })
+            res.on('end', () => {
+                console.log(JSON.parse(resdata))
+                const { data: { publication } } = JSON.parse(resdata)
+    
+                if(!publication){
+                    core.setFailed(`Could not find publication...`)
+                }
+                else{
+                    resolve(publication.posts.edges.map((edge) => edge.node))
+                }
+            })
+    
+            if (res.statusCode !== 200){
+                core.setFailed(`Failed to fetch posts. StatusCode: ${res.statusCode}`)
+            }
+    
+            
         })
-        res.on('end', () => {
-            console.log(JSON.parse(data))
+        req.on('error', (e) => {
+            console.log(e)
+            core.setFailed(e)
+            reject(e)
         })
+        req.write(gqlQuery);
+        req.end();
     })
-    req.on('error', (e) => {
-        console.log(e)
-    })
-    req.write(gqlQuery);
-    req.end();
 
+    let result = await reqPromise
+    console.log(`return Result : ${result}`)
+    return result
 }
 
 async function main(){
     let inputs = await getInputs()
     let posts = await getPosts(inputs)
+    core.setOutput('result', JSON.stringify(posts))
 }
 
 main()
