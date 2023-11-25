@@ -39,14 +39,27 @@ async function getPosts(inputs) {
         {
             query: `{
                     publication(id: "${PublicationId}") {
-                        isTeam
-                        title
                         posts(first: ${maxPosts}) {
                         edges {
                             node {
+                            id
                             title
+                            subtitle
                             brief
+                            publishedAt
+                            tags {
+                                name
+                                slug
+                            }
                             url
+                            coverImage {
+                                url
+                            }
+                            readTimeInMinutes
+                            views 
+                            series {
+                                name
+                            }
                             }
                         }
                         }
