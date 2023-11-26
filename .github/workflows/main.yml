@@ -7,14 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     name: My test Custom Action
     steps:
-      - name: My first step - check out repository
+      - name: Check out repository
         uses: actions/checkout@v4
-      - name: Hello World Action
-        id: helloworld
-        # uses: anupammajhi/githubaction-latest-hashnode-posts@v0.0.1
+      - name: Get Latest Hashnode Posts
+        id: latest_hashnode_posts
+        # uses: anupammajhi/githubaction-latest-hashnode-posts@v0.0.3
         uses: "./"
         with:
           HASHNODE_PUBLICATION_ID: ${{ secrets.ANUPAMMAJHI_HASHNODE_PUB_ID }}
       - name: Get Output
         id: getoutput
-        run: echo 'Output - ${{ steps.helloworld.outputs.result }}'
+        run: echo 'Output - ${{ steps.latest_hashnode_posts.outputs.result }}'
