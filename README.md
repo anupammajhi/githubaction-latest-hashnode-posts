@@ -30,7 +30,7 @@ jobs:
 
       - name: Get Hashnode Posts
         id: hashnode-posts
-        uses: anupammajhi/githubaction-latest-hashnode-posts@v0.0.3
+        uses: anupammajhi/githubaction-latest-hashnode-posts@v1.0.0
         with:
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
           HASHNODE_GQL_ENDPOINT: 'https://gql.hashnode.com' # Optional
